@@ -1,5 +1,5 @@
 # merkle-stamp
-Toolkit for verifying consistency of assets
+Toolkit for verifying consistency and integrity of assets
 
 ## Applications include
 
