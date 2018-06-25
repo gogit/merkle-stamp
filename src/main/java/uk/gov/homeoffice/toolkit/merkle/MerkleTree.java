@@ -23,7 +23,6 @@ public class MerkleTree<T, H> {
     }
 
     /**
-     *
      * @param recs
      * @return
      */
@@ -61,9 +60,7 @@ public class MerkleTree<T, H> {
     private void buildLeafLevel(final int size, Iterator<T> recs, final Stack<Node<T, H>> stackCurrent) {
         boolean even = size % 2 == 0;
         for (int i = 0, j = size / 2; i < size / 2; i++, j++) {
-            T left = recs.next();
-            T right = recs.next();
-            stackCurrent.push(getLeafNode(left, right));
+            stackCurrent.push(getLeafNode(recs.next(), recs.next()));
         }
         if (!even) {
             stackCurrent.push(getLeafNode(recs.next()));
@@ -73,13 +70,10 @@ public class MerkleTree<T, H> {
     private void stackPush(final Stack<Node<T, H>> stackCurrent, final Stack<Node<T, H>> stackUp) {
         while (!stackCurrent.isEmpty()) {
             if (stackCurrent.size() == 1) {
-                Node<T, H> single = stackCurrent.pop();
-                stackUp.push(getNode(single, null));
+                stackUp.push(getNode(stackCurrent.pop(), null));
                 return;
             }
-            Node<T, H> left = stackCurrent.pop();
-            Node<T, H> right = stackCurrent.pop();
-            stackUp.push(getNode(left, right));
+            stackUp.push(getNode(stackCurrent.pop(), stackCurrent.pop()));
         }
     }
 
