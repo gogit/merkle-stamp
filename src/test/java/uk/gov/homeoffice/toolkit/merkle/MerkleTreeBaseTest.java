@@ -15,19 +15,16 @@ public class MerkleTreeBaseTest {
 
         @Override
         public String hashOfItem(String left, String right) {
-            return emptyIfNull(left)+emptyIfNull(right);
+            return emptyIfNull(left) + emptyIfNull(right);
         }
 
         @Override
         public String hashOfHash(String left, String right) {
-            return emptyIfNull(left)+emptyIfNull(right);
+            return emptyIfNull(left) + emptyIfNull(right);
         }
 
-        private String emptyIfNull(String data){
-            if(data==null){
-                return "";
-            }
-            return data;
+        private String emptyIfNull(String data) {
+            return data == null ? "" : data;
         }
 
         @Override
