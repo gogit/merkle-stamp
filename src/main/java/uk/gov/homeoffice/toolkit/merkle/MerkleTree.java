@@ -1,5 +1,6 @@
 package uk.gov.homeoffice.toolkit.merkle;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -13,29 +14,36 @@ public class MerkleTree<T, H> {
     /**
      *
      */
-    private HashFunction<T, H> hashFunction;
+    private final HashFunction<T, H> hashFunction;
+
+    /**
+     *
+     */
+    private final List<T> leaves;
 
     /**
      * @param hashFunction
      */
     public MerkleTree(HashFunction<T, H> hashFunction) {
         this.hashFunction = hashFunction;
+        this.leaves = new ArrayList<>();
     }
 
     /**
-     * @param recs
-     * @return
+     *
+     * @param leaf
      */
-    public Node<T, H> buildTree(final List<T> recs) {
-        return buildTree(recs.size(), recs.iterator());
+    public void push(T leaf){
+        leaves.add(leaf);
     }
 
     /**
-     * @param size
-     * @param recs
+     *
      * @return
      */
-    public Node<T, H> buildTree(final int size, final Iterator<T> recs) {
+    public Node<T, H> buildTree() {
+        int size = leaves.size();
+        Iterator<T> recs = leaves.iterator();
         if (size <= 1) {
             return new Node<>(1, hashFunction.hashOfItem(recs.next()));
         }

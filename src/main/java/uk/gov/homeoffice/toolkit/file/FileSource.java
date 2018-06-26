@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -27,7 +28,7 @@ public class FileSource {
         String[] fileNames = dir.list();
         File[] files = dir.listFiles();
         if (files == null || files.length==0) return;
-        listedFiles.put(sourcePath, Arrays.asList(fileNames));
+        listedFiles.put(sourcePath, Arrays.stream(files).map(f->f.getAbsolutePath()).collect(Collectors.toList()));
         for ( File f : files ) {
             if ( !Files.isSymbolicLink(f.toPath()) && f.isDirectory() ) {
                 walk( f.getAbsolutePath() );
@@ -35,7 +36,11 @@ public class FileSource {
         }
     }
 
-    public Map<String, List<String>> getListedFiles() {
+    public Map<String, List<String>> getMapOfFiles() {
         return listedFiles;
+    }
+
+    public List<String> getListOfFiles() {
+        return listedFiles.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
 }

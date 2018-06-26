@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class MerkleTreeBaseTest {
 
@@ -70,8 +69,8 @@ public class MerkleTreeBaseTest {
 
     private void test(String data) {
         String[] al = data.split("");
-        List<String> a = Arrays.asList(al);
-        Node<String, String> n = mt.buildTree(a.size(), a.iterator());
+        Arrays.stream(al).forEach(s->mt.push(s));
+        Node<String, String> n = mt.buildTree();
         String hash = n.getHash();
         for (String s : al) {
             Assert.assertTrue(hash.contains(s));
