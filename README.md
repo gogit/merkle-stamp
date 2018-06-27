@@ -9,6 +9,8 @@ Source sends X events, Sink receives Y events
 
 Check that X == Y and events are not lost in transit
 
+**Stamp and digitally sign ..**
+
 
 ### Database integrity
 
