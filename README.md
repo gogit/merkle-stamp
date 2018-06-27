@@ -29,6 +29,12 @@ Filesystem directory in state X on day 1, Filesystem directory in state Y on day
 
 Check that X == Y and directory has not been corrupted
 
+#### Benchmarks
+
+TODO
+
+86 seconds for 79122 files 
+
 
 ### Webserver integrity
 

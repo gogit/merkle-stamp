@@ -48,8 +48,8 @@ public class FileStamp implements Stamp<String> {
         BenchMark ben = new BenchMark();
         Duration duration = ben.execute((Void) -> {
             try {
-                //TODO Uncomment to test 75 secs for x files
-                //System.out.println(new FileStamp("/home", new BouncyCastleHashFunction(HashDigest.SHA1)).stamp());
+                //TODO Uncomment to test 75 secs for 79122 files
+                //System.out.println(new FileStamp("/home/pt", new BouncyCastleHashFunction(HashDigest.SHA1)).stamp());
             } catch (Exception e) {
                 e.printStackTrace();
             }
