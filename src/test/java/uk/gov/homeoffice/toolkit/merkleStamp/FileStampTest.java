@@ -4,58 +4,62 @@ import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA1Digest;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.encoders.Hex;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import uk.gov.homeoffice.toolkit.merkle.BouncyCastleHashFunction;
+import uk.gov.homeoffice.toolkit.merkle.HashDigest;
 import uk.gov.homeoffice.toolkit.merkle.HashFunction;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 
 public class FileStampTest {
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
+    private static final String FILE1 = "file1";
+
     @Before
     public void testInTempFolder() throws IOException {
-        tempFolder.newFile("file1.txt");
+        tempFolder.newFile(FILE1);
     }
 
     @Test
     public void test() throws Exception {
-        FileStamp fileStamp = new FileStamp(tempFolder.getRoot().getAbsolutePath(), hashFunction());
-        System.out.println(fileStamp.stamp());
-    }
+        FileStamp fileStamp = new FileStamp(tempFolder.getRoot().getAbsolutePath(), new BouncyCastleHashFunction(HashDigest.SHA1));
 
-    private HashFunction<ByteBuffer, String> hashFunction() {
-        return new HashFunction<ByteBuffer, String>() {
-            @Override
-            public String hashOfItem(ByteBuffer item) {
-                return Hex.toHexString(calculateHash(item.array(), new SHA1Digest()));
-            }
+        Files.write(new File(tempFolder.getRoot().getAbsolutePath(), FILE1).toPath(),
+                new byte[]{0}, StandardOpenOption.APPEND);
+        String stamp1 = fileStamp.stamp();
 
-            @Override
-            public String hashOfItem(ByteBuffer left, ByteBuffer right) {
-                return Hex.toHexString(calculateHash(Arrays.concatenate(left.array(), right.array()), new SHA1Digest()));
-            }
+        Files.write(new File(tempFolder.getRoot().getAbsolutePath(), FILE1).toPath(),
+                new byte[]{0}, StandardOpenOption.CREATE);
+        String stamp2 = fileStamp.stamp();
 
-            @Override
-            public String hashOfHash(String left, String right) {
-                return Hex.toHexString(calculateHash(Arrays.concatenate(handleNull(left), handleNull(right)), new SHA1Digest()));
-            }
+        Assert.assertEquals(stamp1, stamp2);
 
-            private byte[] handleNull(String rec) {
-                return rec == null ? new byte[0] : rec.getBytes();
-            }
+        Files.write(new File(tempFolder.getRoot().getAbsolutePath(), FILE1).toPath(),
+                new byte[]{1}, StandardOpenOption.CREATE);
+        String stamp3 = fileStamp.stamp();
+        Assert.assertNotEquals(stamp2, stamp3);
 
-            private byte[] calculateHash(byte[] input, Digest digest) {
-                byte[] retValue = new byte[digest.getDigestSize()];
-                digest.update(input, 0, input.length);
-                digest.doFinal(retValue, 0);
-                return retValue;
-            }
-        };
+        Files.write(new File(tempFolder.getRoot().getAbsolutePath(), FILE1).toPath(),
+                new byte[]{0}, StandardOpenOption.CREATE);
+        String stamp4 = fileStamp.stamp();
+        Assert.assertEquals(stamp2, stamp4);
+
+        Files.write(new File(tempFolder.getRoot().getAbsolutePath(), FILE1).toPath(),
+                new byte[]{0}, StandardOpenOption.APPEND);
+        String stamp5 = fileStamp.stamp();
+        Assert.assertNotEquals(stamp4, stamp5);
+
     }
 }

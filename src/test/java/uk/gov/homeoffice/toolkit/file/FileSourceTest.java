@@ -27,6 +27,6 @@ public class FileSourceTest {
         Map<String, List<String>> listed = fileSource.getMapOfFiles();
         Assert.assertEquals(1, listed.size());
         Assert.assertEquals(1, listed.get(tempFolder.getRoot().getAbsolutePath()).size());
-        Assert.assertEquals("file1.txt", listed.get(tempFolder.getRoot().getAbsolutePath()).get(0));
+        Assert.assertEquals(tempFolder.getRoot().getAbsolutePath()+"/file1.txt", listed.get(tempFolder.getRoot().getAbsolutePath()).get(0));
     }
 }
