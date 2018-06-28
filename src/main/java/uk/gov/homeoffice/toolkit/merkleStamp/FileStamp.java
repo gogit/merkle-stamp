@@ -4,16 +4,15 @@ import uk.gov.homeoffice.toolkit.concurrent.TaskExecutor;
 import uk.gov.homeoffice.toolkit.file.FileHandler;
 import uk.gov.homeoffice.toolkit.file.FileHash;
 import uk.gov.homeoffice.toolkit.file.FileSource;
-import uk.gov.homeoffice.toolkit.merkle.BouncyCastleHashFunction;
+import uk.gov.homeoffice.toolkit.hash.BouncyCastleHashFunction;
 import uk.gov.homeoffice.toolkit.merkle.HashDigest;
-import uk.gov.homeoffice.toolkit.merkle.HashFunction;
+import uk.gov.homeoffice.toolkit.hash.HashFunction;
 import uk.gov.homeoffice.toolkit.merkle.MerkleTree;
 import uk.gov.homeoffice.toolkit.util.BenchMark;
 
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class FileStamp implements Stamp<String> {
@@ -48,8 +47,7 @@ public class FileStamp implements Stamp<String> {
         BenchMark ben = new BenchMark();
         Duration duration = ben.execute((Void) -> {
             try {
-                //TODO Uncomment to test 75 secs for 79122 files
-                //System.out.println(new FileStamp("/home/pt", new BouncyCastleHashFunction(HashDigest.SHA1)).stamp());
+                System.out.println(new FileStamp("/home/pt", new BouncyCastleHashFunction(HashDigest.SHA1)).stamp());
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,23 +1,16 @@
 package uk.gov.homeoffice.toolkit.merkleStamp;
 
-import org.bouncycastle.crypto.Digest;
-import org.bouncycastle.crypto.digests.SHA1Digest;
-import org.bouncycastle.util.Arrays;
-import org.bouncycastle.util.encoders.Hex;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import uk.gov.homeoffice.toolkit.merkle.BouncyCastleHashFunction;
+import uk.gov.homeoffice.toolkit.hash.BouncyCastleHashFunction;
 import uk.gov.homeoffice.toolkit.merkle.HashDigest;
-import uk.gov.homeoffice.toolkit.merkle.HashFunction;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 
 public class FileStampTest {

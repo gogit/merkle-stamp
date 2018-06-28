@@ -1,4 +1,4 @@
-package uk.gov.homeoffice.toolkit.merkle;
+package uk.gov.homeoffice.toolkit.hash;
 
 /**
  * Hash function to be applied

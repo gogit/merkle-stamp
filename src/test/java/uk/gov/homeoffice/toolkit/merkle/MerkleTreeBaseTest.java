@@ -2,6 +2,9 @@ package uk.gov.homeoffice.toolkit.merkle;
 
 import org.junit.Assert;
 import org.junit.Test;
+import uk.gov.homeoffice.toolkit.hash.EchoHashFunction;
+import uk.gov.homeoffice.toolkit.hash.HashFunction;
+import uk.gov.homeoffice.toolkit.util.JsonParser;
 
 import java.util.Arrays;
 
@@ -10,27 +13,7 @@ public class MerkleTreeBaseTest {
     /**
      * Use a function that echoes input for test
      */
-    MerkleTree<String, String> mt = new MerkleTree(new HashFunction<String, String>() {
-
-        @Override
-        public String hashOfItem(String left, String right) {
-            return emptyIfNull(left) + emptyIfNull(right);
-        }
-
-        @Override
-        public String hashOfHash(String left, String right) {
-            return emptyIfNull(left) + emptyIfNull(right);
-        }
-
-        private String emptyIfNull(String data) {
-            return data == null ? "" : data;
-        }
-
-        @Override
-        public String hashOfItem(String item) {
-            return item;
-        }
-    });
+    MerkleTree<String, String> mt = new MerkleTree(new EchoHashFunction());
 
     @Test
     public void test1() {
@@ -76,7 +59,8 @@ public class MerkleTreeBaseTest {
             Assert.assertTrue(hash.contains(s));
         }
         Assert.assertEquals(al.length, hash.length());
-    }
 
+        System.out.println(new JsonParser<Node<String, String>>().asPrettyString(n));
+    }
 
 }

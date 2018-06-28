@@ -1,5 +1,7 @@
 package uk.gov.homeoffice.toolkit.merkle;
 
+import uk.gov.homeoffice.toolkit.hash.HashFunction;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,15 +32,13 @@ public class MerkleTree<T, H> {
     }
 
     /**
-     *
      * @param leaf
      */
-    public void push(T leaf){
+    public void push(T leaf) {
         leaves.add(leaf);
     }
 
     /**
-     *
      * @return
      */
     public Node<T, H> buildTree() {
@@ -66,13 +66,7 @@ public class MerkleTree<T, H> {
     }
 
     private void buildLeafLevel(final int size, Iterator<T> recs, final Stack<Node<T, H>> stackCurrent) {
-        boolean even = size % 2 == 0;
-        for (int i = 0, j = size / 2; i < size / 2; i++, j++) {
-            stackCurrent.push(getLeafNode(recs.next(), recs.next()));
-        }
-        if (!even) {
-            stackCurrent.push(getLeafNode(recs.next()));
-        }
+        recs.forEachRemaining(it->stackCurrent.push(getLeafNode(it)));
     }
 
     private void stackPush(final Stack<Node<T, H>> stackCurrent, final Stack<Node<T, H>> stackUp) {
@@ -93,9 +87,10 @@ public class MerkleTree<T, H> {
         return hashFunction.hashOfHash(hashOrNull(left), hashOrNull(right));
     }
 
+    /*
     private Node<T, H> getLeafNode(final T left, final T right) {
         return new Node<>(0, hashLeaf(left, right));
-    }
+    }*/
 
     private Node<T, H> getLeafNode(final T left) {
         return new Node<>(0, hashFunction.hashOfItem((left)));

@@ -41,3 +41,8 @@ TODO
 Webserver is serving n assets in state X on day 1, Webserver is serving n assets in state Y on day 2
 
 Check that X == Y and assets are not corrupted
+
+
+### Stamp Server
+
+Coming soon ...

@@ -1,4 +1,4 @@
-package uk.gov.homeoffice.toolkit.merkle;
+package uk.gov.homeoffice.toolkit.hash;
 
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.GeneralDigest;
@@ -7,7 +7,7 @@ import org.bouncycastle.crypto.digests.SHA224Digest;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.encoders.Hex;
-import uk.gov.homeoffice.toolkit.merkle.HashFunction;
+import uk.gov.homeoffice.toolkit.merkle.HashDigest;
 
 import java.nio.ByteBuffer;
 
