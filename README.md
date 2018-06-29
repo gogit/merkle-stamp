@@ -46,3 +46,12 @@ Check that X == Y and assets are not corrupted
 ### Stamp Server
 
 Coming soon ...
+
+
+### Attribution
+
+* BouncyCastle
+* Jetty
+* Jersey
+* HdrHistogram
+
