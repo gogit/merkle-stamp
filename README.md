@@ -40,7 +40,7 @@ Location of the directory and the SHA hash type to use
 <pre> 
 ~/merkle-stamp$ java -jar target/merkle-stamp-0.0.1-SNAPSHOT.jar /home/pt SHA1
 
-File Stamp      -> 0b42ed1d03044f7c481498ff6d9f23f033f8c6cf
+Merkle Stamp      -> 0b42ed1d03044f7c481498ff6d9f23f033f8c6cf
 Hash used       -> SHA1
 Files processed -> 441884
 Time taken secs -> 74
