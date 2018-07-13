@@ -35,7 +35,7 @@ mvn clean package -Pfile
 
 #### Running
 
-Location of the directory and the SHA hash file to use
+Location of the directory and the SHA hash type to use
 
 <pre> 
 ~/merkle-stamp$ java -jar target/merkle-stamp-0.0.1-SNAPSHOT.jar /home/pt SHA1
