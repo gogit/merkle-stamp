@@ -12,6 +12,7 @@ public class Node<T, H> {
     private Node<T, H> right;
     private int level;
     private H hash;
+    private int leafCount;
 
 
     public Node(final Node<T, H> left, final Node<T, H> right, final int level, final H hash) {
@@ -42,5 +43,14 @@ public class Node<T, H> {
 
     public H getHash() {
         return hash;
+    }
+
+    public int getLeafCount() {
+        return leafCount;
+    }
+
+    public Node<T, H> setLeafCount(int leafCount) {
+        this.leafCount = leafCount;
+        return this;
     }
 }

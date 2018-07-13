@@ -15,15 +15,24 @@ public class BouncyCastleHashFunction implements HashFunction<ByteBuffer, String
 
     GeneralDigest generalDigest;
 
+    String hashName;
+
     public BouncyCastleHashFunction(final HashDigest digest) {
         switch (digest) {
             case SHA1:
                 generalDigest = new SHA1Digest();
+                hashName = "SHA1";
+                break;
             case SHA224:
                 generalDigest = new SHA224Digest();
+                hashName = "SHA224";
+                break;
             case SHA256:
                 generalDigest = new SHA256Digest();
+                hashName = "SHA256";
+                break;
             default:
+                hashName = "SHA1";
                 generalDigest = new SHA1Digest();
         }
     }
@@ -52,5 +61,10 @@ public class BouncyCastleHashFunction implements HashFunction<ByteBuffer, String
         digest.update(input, 0, input.length);
         digest.doFinal(retValue, 0);
         return retValue;
+    }
+
+    @Override
+    public String nameOfHash() {
+        return hashName;
     }
 }

@@ -56,7 +56,7 @@ public class MerkleTree<T, H> {
         stackPush(stackCurrent, stackUp);
         while (!stackUp.isEmpty()) {
             if (stackUp.size() == 1) {
-                return stackUp.pop();
+                return stackUp.pop().setLeafCount(size);
             }
             stackCurrent = stackUp;
             stackUp = new Stack<>();

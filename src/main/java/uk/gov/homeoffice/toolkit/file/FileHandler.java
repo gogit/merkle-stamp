@@ -13,7 +13,6 @@ public class FileHandler implements Handler<ByteBuffer>{
         this.merkleTree = merkleTree;
     }
 
-    @Override
     public void result(ByteBuffer result) {
         merkleTree.push(result);
     }

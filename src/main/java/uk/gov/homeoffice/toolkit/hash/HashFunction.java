@@ -29,4 +29,9 @@ public interface HashFunction<T, H> {
      */
     H hashOfHash(H left, H right);
 
+    /**
+     *
+     * @return
+     */
+    String nameOfHash();
 }

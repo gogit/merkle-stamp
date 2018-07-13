@@ -9,4 +9,10 @@ public interface Stamp<H> {
      * @throws Exception
      */
     H stamp()throws Exception;
+
+    /**
+     *
+     * @return
+     */
+    int getLeafCount();
 }

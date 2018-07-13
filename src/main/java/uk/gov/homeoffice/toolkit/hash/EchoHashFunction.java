@@ -24,4 +24,9 @@ public class EchoHashFunction implements HashFunction<String, String> {
     public String hashOfItem(String item) {
         return item;
     }
+
+    @Override
+    public String nameOfHash() {
+        return "ECHO";
+    }
 }

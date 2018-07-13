@@ -8,6 +8,7 @@ import uk.gov.homeoffice.toolkit.hash.BouncyCastleHashFunction;
 import uk.gov.homeoffice.toolkit.merkle.HashDigest;
 import uk.gov.homeoffice.toolkit.hash.HashFunction;
 import uk.gov.homeoffice.toolkit.merkle.MerkleTree;
+import uk.gov.homeoffice.toolkit.merkle.Node;
 import uk.gov.homeoffice.toolkit.util.BenchMark;
 
 import java.io.File;
@@ -19,11 +20,12 @@ public class FileStamp implements Stamp<String> {
 
     String rootDirectory;
 
-    final HashFunction<ByteBuffer, String> hashFunction;
+    HashFunction<ByteBuffer, String> hashFunction;
 
-    public FileStamp(final String rootDirectory, final HashFunction<ByteBuffer, String> hashFunction) {
+    int noLeaves;
+
+    public FileStamp(final String rootDirectory) {
         this.rootDirectory = rootDirectory;
-        this.hashFunction = hashFunction;
         File dir = new File(rootDirectory);
         if (!dir.exists()) {
             throw new IllegalArgumentException("Directory does not exist " + rootDirectory);
@@ -33,6 +35,14 @@ public class FileStamp implements Stamp<String> {
         }
     }
 
+    public HashFunction<ByteBuffer, String> getHashFunction() {
+        return hashFunction;
+    }
+
+    public void setHashFunction(HashFunction<ByteBuffer, String> hashFunction) {
+        this.hashFunction = hashFunction;
+    }
+
     @Override
     public String stamp() throws Exception {
         FileSource fileSource = new FileSource();
@@ -40,19 +50,43 @@ public class FileStamp implements Stamp<String> {
         MerkleTree<ByteBuffer, String> merkleTree = new MerkleTree(hashFunction);
         new TaskExecutor<ByteBuffer>().execute(fileSource.getListOfFiles().stream().map(
                 f -> new FileHash(new File(f))).collect(Collectors.toList()), new FileHandler(merkleTree));
-        return merkleTree.buildTree().getHash();
+        Node<ByteBuffer, String> node = merkleTree.buildTree();
+        noLeaves = node.getLeafCount();
+        return node.getHash();
+    }
+
+    @Override
+    public int getLeafCount() {
+        return noLeaves;
     }
 
     public static void main(String args[]) throws Exception {
+        if (args == null || args.length != 2) {
+            System.out.println("Pass in the directory to hash and the hash type (SHA1|SHA224|SHA256)");
+            System.exit(0);
+        }
         BenchMark ben = new BenchMark();
+        final FileStamp fileStamp = new FileStamp(args[0]);
         Duration duration = ben.execute((Void) -> {
             try {
-                System.out.println(new FileStamp("/home/pt", new BouncyCastleHashFunction(HashDigest.SHA1)).stamp());
+                switch (args[1]) {
+                    case "SHA1":
+                        fileStamp.setHashFunction(new BouncyCastleHashFunction(HashDigest.SHA1));
+                        break;
+                    case "SHA224":
+                        fileStamp.setHashFunction(new BouncyCastleHashFunction(HashDigest.SHA224));
+                        break;
+                    case "SHA256":
+                        fileStamp.setHashFunction(new BouncyCastleHashFunction(HashDigest.SHA256));
+                        break;
+                }
+                System.out.println("File Stamp      -> " + fileStamp.stamp());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        System.out.println(duration.getSeconds());
-
+        System.out.println("Hash used       -> " + fileStamp.getHashFunction().nameOfHash());
+        System.out.println("Files processed -> " + fileStamp.getLeafCount());
+        System.out.println("Time taken secs -> " + duration.getSeconds());
     }
 }

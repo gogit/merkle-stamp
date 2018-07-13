@@ -27,8 +27,8 @@ public class FileStampTest {
 
     @Test
     public void test() throws Exception {
-        FileStamp fileStamp = new FileStamp(tempFolder.getRoot().getAbsolutePath(), new BouncyCastleHashFunction(HashDigest.SHA1));
-
+        FileStamp fileStamp = new FileStamp(tempFolder.getRoot().getAbsolutePath());
+        fileStamp.setHashFunction(new BouncyCastleHashFunction(HashDigest.SHA1));
         Files.write(new File(tempFolder.getRoot().getAbsolutePath(), FILE1).toPath(),
                 new byte[]{0}, StandardOpenOption.APPEND);
         String stamp1 = fileStamp.stamp();

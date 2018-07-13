@@ -29,12 +29,22 @@ Filesystem directory in state X on day 1, Filesystem directory in state Y on day
 
 Check that X == Y and directory has not been corrupted
 
-#### Benchmarks
+#### Building
 
-TODO
+mvn clean package -Pfile
 
-86 seconds for 79122 files 
+#### Running
 
+Location of the directory and the SHA hash file to use
+
+<pre> 
+~/merkle-stamp$ java -jar target/merkle-stamp-0.0.1-SNAPSHOT.jar /home/pt SHA1
+
+File Stamp      -> 0b42ed1d03044f7c481498ff6d9f23f033f8c6cf
+Hash used       -> SHA1
+Files processed -> 441884
+Time taken secs -> 74
+</pre>
 
 ### Webserver integrity
 
